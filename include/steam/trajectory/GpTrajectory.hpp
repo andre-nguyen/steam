@@ -32,8 +32,8 @@ class GpTrajectory
   struct Knot {
 
     /// Convenience typedefs
-    typedef boost::shared_ptr<Knot> Ptr;
-    typedef boost::shared_ptr<const Knot> ConstPtr;
+    typedef std::shared_ptr<Knot> Ptr;
+    typedef std::shared_ptr<const Knot> ConstPtr;
 
     // Time
     steam::Time time;
@@ -113,7 +113,7 @@ class GpTrajectory
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Ordered map of knots
   //////////////////////////////////////////////////////////////////////////////////////////////
-  std::map<boost::int64_t, Knot::Ptr> knotMap_;
+  std::map<int64_t, Knot::Ptr> knotMap_;
 
 };
 

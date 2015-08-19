@@ -45,7 +45,7 @@ void GpTrajectory::add(const steam::Time& time, const lgmath::se3::Transformatio
   }
 
   // Insert in map
-  knotMap_.insert(knotMap_.end(), std::pair<boost::int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
+  knotMap_.insert(knotMap_.end(), std::pair<int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +68,7 @@ void GpTrajectory::add(const steam::Time& time, const lgmath::se3::Transformatio
   } else {
 
     // Get iterator to last element
-    std::map<boost::int64_t, Knot::Ptr>::reverse_iterator rit = knotMap_.rbegin();
+    std::map<int64_t, Knot::Ptr>::reverse_iterator rit = knotMap_.rbegin();
 
     // Check that time is `advancing'
     if (time.nanosecs() <= rit->first) {
@@ -82,7 +82,7 @@ void GpTrajectory::add(const steam::Time& time, const lgmath::se3::Transformatio
   }
 
   // Insert in map
-  knotMap_.insert(knotMap_.end(), std::pair<boost::int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
+  knotMap_.insert(knotMap_.end(), std::pair<int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +107,7 @@ void GpTrajectory::add(const steam::Time& time) {
   } else {
 
     // Get iterator to last element
-    std::map<boost::int64_t, Knot::Ptr>::reverse_iterator rit = knotMap_.rbegin();
+    std::map<int64_t, Knot::Ptr>::reverse_iterator rit = knotMap_.rbegin();
 
     // Check that time is `advancing'
     if (time.nanosecs() <= rit->first) {
@@ -128,7 +128,7 @@ void GpTrajectory::add(const steam::Time& time) {
   }
 
   // Insert in map
-  knotMap_.insert(knotMap_.end(), std::pair<boost::int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
+  knotMap_.insert(knotMap_.end(), std::pair<int64_t, Knot::Ptr>(time.nanosecs(), newEntry));
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -137,7 +137,7 @@ void GpTrajectory::add(const steam::Time& time) {
 TransformEvaluator::ConstPtr GpTrajectory::getEvaluator(const steam::Time& time) const {
 
   // Get first iterator
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it1 = knotMap_.lower_bound(time.nanosecs());
+  std::map<int64_t, Knot::Ptr>::const_iterator it1 = knotMap_.lower_bound(time.nanosecs());
   if (it1 == knotMap_.end()) {
     throw std::runtime_error("Requested trajectory evaluator at an invalid time.");
   }
@@ -154,7 +154,7 @@ TransformEvaluator::ConstPtr GpTrajectory::getEvaluator(const steam::Time& time)
     throw std::runtime_error("Requested trajectory evaluator at an invalid time. This exception "
                              "should not trigger... report to a STEAM contributor.");
   }
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it2 = it1; --it1;
+  std::map<int64_t, Knot::Ptr>::const_iterator it2 = it1; --it1;
   if (time <= it1->second->time || time >= it2->second->time) {
     throw std::runtime_error("Requested trajectory evaluator at an invalid time. This exception "
                              "should not trigger... report to a STEAM contributor.");
@@ -169,7 +169,7 @@ TransformEvaluator::ConstPtr GpTrajectory::getEvaluator(const steam::Time& time)
 //////////////////////////////////////////////////////////////////////////////////////////////
 void GpTrajectory::lockBefore(const steam::Time& time) {
 
-  std::map<boost::int64_t, Knot::Ptr>::reverse_iterator rit;
+  std::map<int64_t, Knot::Ptr>::reverse_iterator rit;
   for (rit = knotMap_.rbegin(); rit != knotMap_.rend(); ++rit) {
     if (rit->second->time < time) {
       rit->second->T_k0->setLock(true);
@@ -188,7 +188,7 @@ std::vector<steam::StateVariableBase::Ptr> GpTrajectory::getActiveStateVariables
   std::vector<steam::StateVariableBase::Ptr> result;
 
   // Iterate over trajectory
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it;
+  std::map<int64_t, Knot::Ptr>::const_iterator it;
   for (it = knotMap_.begin(); it != knotMap_.end(); ++it) {
 
     // Check if transform is locked
@@ -220,7 +220,7 @@ void GpTrajectory::getPriorCostTerms(CostTermCollection<6,6>::Ptr unary,
   steam::L2LossFunc::Ptr sharedLossFunc(new steam::L2LossFunc());
 
   // Add initial prior terms if variables are not locked
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it1 = knotMap_.begin();
+  std::map<int64_t, Knot::Ptr>::const_iterator it1 = knotMap_.begin();
   if (it1 == knotMap_.end()) {
     throw std::runtime_error("Requested trajectory evaluator at an invalid time. This exception "
                              "should not trigger... report to a STEAM contributor.");
@@ -250,7 +250,7 @@ void GpTrajectory::getPriorCostTerms(CostTermCollection<6,6>::Ptr unary,
   }
 
   // Iterate through all states.. if any are unlocked, supply a prior term
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it2 = it1; ++it2;
+  std::map<int64_t, Knot::Ptr>::const_iterator it2 = it1; ++it2;
   for (; it2 != knotMap_.end(); ++it1, ++it2) {
 
     // Get knots
@@ -287,7 +287,7 @@ std::vector<se3::TransformStateVar::Ptr> GpTrajectory::getTransformStateVariable
   std::vector<se3::TransformStateVar::Ptr> result;
 
   // Iterate over trajectory
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it;
+  std::map<int64_t, Knot::Ptr>::const_iterator it;
   for (it = knotMap_.begin(); it != knotMap_.end(); ++it) {
     result.push_back(it->second->T_k0);
   }
@@ -303,7 +303,7 @@ std::vector<VectorSpaceStateVar::Ptr> GpTrajectory::getVelocityStateVariables() 
   std::vector<VectorSpaceStateVar::Ptr> result;
 
   // Iterate over trajectory
-  std::map<boost::int64_t, Knot::Ptr>::const_iterator it;
+  std::map<int64_t, Knot::Ptr>::const_iterator it;
   for (it = knotMap_.begin(); it != knotMap_.end(); ++it) {
     result.push_back(it->second->varpi);
   }

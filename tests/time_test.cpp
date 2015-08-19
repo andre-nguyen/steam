@@ -16,7 +16,7 @@ TEST_CASE("time test 1", "[time]" ) {
   REQUIRE( time.nanosecs() == 0 );
 
   // example nanoseconds since epoch
-  boost::int64_t epoch64 = 1500000000123456789;
+  int64_t epoch64 = 1500000000123456789;
   //                     ^   sec  ^^ nano  ^
 
   // test epoch
@@ -24,7 +24,7 @@ TEST_CASE("time test 1", "[time]" ) {
   REQUIRE( epoch.nanosecs() == 1500000000123456789 );
 
   // test epoch
-  boost::int64_t epoch_secs64 = 1500000000e9;
+  int64_t epoch_secs64 = 1500000000e9;
   steam::Time epoch_secs = steam::Time(epoch_secs64);
   steam::Time epoch_nsecs = epoch - epoch_secs;
   REQUIRE( epoch_nsecs.nanosecs() == 123456789 );
@@ -38,8 +38,8 @@ TEST_CASE("time test 1", "[time]" ) {
   REQUIRE( nano_back_to_time.nanosecs() == 123456789 );
 
   // two 32-bits to 64-bit (e.g. ros::Time)
-  boost::int32_t secs32 = 1500000000;
-  boost::int32_t nsecs32 = 123456789;
+  int32_t secs32 = 1500000000;
+  int32_t nsecs32 = 123456789;
   REQUIRE( epoch.nanosecs() == steam::Time(secs32, nsecs32).nanosecs() );
 
   // doubles store 15 sig figs...

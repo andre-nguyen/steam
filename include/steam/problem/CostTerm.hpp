@@ -7,7 +7,7 @@
 #ifndef STEAM_COST_TERM_HPP
 #define STEAM_COST_TERM_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <steam/evaluator/ErrorEvaluator.hpp>
 #include <steam/problem/NoiseModel.hpp>
@@ -25,8 +25,8 @@ class CostTerm
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<CostTerm<MEAS_DIM,MAX_STATE_SIZE> > Ptr;
-  typedef boost::shared_ptr<const CostTerm<MEAS_DIM,MAX_STATE_SIZE> > ConstPtr;
+  typedef std::shared_ptr<CostTerm<MEAS_DIM,MAX_STATE_SIZE> > Ptr;
+  typedef std::shared_ptr<const CostTerm<MEAS_DIM,MAX_STATE_SIZE> > ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

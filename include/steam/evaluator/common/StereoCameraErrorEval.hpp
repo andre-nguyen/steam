@@ -32,8 +32,8 @@ public:
   struct CameraIntrinsics {
 
     /// Convenience typedefs
-    typedef boost::shared_ptr<CameraIntrinsics> Ptr;
-    typedef boost::shared_ptr<const CameraIntrinsics> ConstPtr;
+    typedef std::shared_ptr<CameraIntrinsics> Ptr;
+    typedef std::shared_ptr<const CameraIntrinsics> ConstPtr;
 
     /// \brief Stereo baseline
     double b;
@@ -52,8 +52,8 @@ public:
   };
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<StereoCameraErrorEval> Ptr;
-  typedef boost::shared_ptr<const StereoCameraErrorEval> ConstPtr;
+  typedef std::shared_ptr<StereoCameraErrorEval> Ptr;
+  typedef std::shared_ptr<const StereoCameraErrorEval> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

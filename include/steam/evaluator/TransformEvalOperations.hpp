@@ -23,8 +23,8 @@ class ComposeTransformEvaluator : public TransformEvaluator
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<ComposeTransformEvaluator> Ptr;
-  typedef boost::shared_ptr<const ComposeTransformEvaluator> ConstPtr;
+  typedef std::shared_ptr<ComposeTransformEvaluator> Ptr;
+  typedef std::shared_ptr<const ComposeTransformEvaluator> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
@@ -106,8 +106,8 @@ class InverseTransformEvaluator : public TransformEvaluator
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<InverseTransformEvaluator> Ptr;
-  typedef boost::shared_ptr<const InverseTransformEvaluator> ConstPtr;
+  typedef std::shared_ptr<InverseTransformEvaluator> Ptr;
+  typedef std::shared_ptr<const InverseTransformEvaluator> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
@@ -189,8 +189,8 @@ class LogMapEvaluator : public BlockAutomaticEvaluator<Eigen::Matrix<double,6,1>
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<LogMapEvaluator> Ptr;
-  typedef boost::shared_ptr<const LogMapEvaluator> ConstPtr;
+  typedef std::shared_ptr<LogMapEvaluator> Ptr;
+  typedef std::shared_ptr<const LogMapEvaluator> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
@@ -273,8 +273,8 @@ class ComposeLandmarkEvaluator : public BlockAutomaticEvaluator<Eigen::Vector4d,
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<ComposeLandmarkEvaluator> Ptr;
-  typedef boost::shared_ptr<const ComposeLandmarkEvaluator> ConstPtr;
+  typedef std::shared_ptr<ComposeLandmarkEvaluator> Ptr;
+  typedef std::shared_ptr<const ComposeLandmarkEvaluator> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

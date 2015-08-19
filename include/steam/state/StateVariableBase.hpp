@@ -8,8 +8,8 @@
 #define STEAM_STATE_VARIABLE_BASE_HPP
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
-#include <boost/thread.hpp>
+#include <memory>
+#include <mutex>
 
 namespace steam {
 
@@ -28,8 +28,8 @@ class IdGenerator
   /////////////////////////////////////////////////////////////////////////////////////////////
   static StateID getNextId() {
     static StateID nextId = 0;
-    static boost::mutex idMutex;
-    boost::lock_guard<boost::mutex> guard(idMutex);
+    static std::mutex idMutex;
+    std::lock_guard<std::mutex> guard(idMutex);
     return ++nextId;
   }
 };
@@ -73,8 +73,8 @@ class StateVariableBase
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<StateVariableBase> Ptr;
-  typedef boost::shared_ptr<const StateVariableBase> ConstPtr;
+  typedef std::shared_ptr<StateVariableBase> Ptr;
+  typedef std::shared_ptr<const StateVariableBase> ConstPtr;
 
   /////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

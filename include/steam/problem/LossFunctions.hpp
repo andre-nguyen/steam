@@ -8,7 +8,7 @@
 #define STEAM_LOSS_FUNCTIONS_HPP
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <steam/problem/NoiseModel.hpp>
 
@@ -28,8 +28,8 @@ class LossFunction
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<LossFunction> Ptr;
-  typedef boost::shared_ptr<const LossFunction> ConstPtr;
+  typedef std::shared_ptr<LossFunction> Ptr;
+  typedef std::shared_ptr<const LossFunction> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
@@ -56,8 +56,8 @@ class L2LossFunc : public LossFunction
 public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<L2LossFunc> Ptr;
-  typedef boost::shared_ptr<const L2LossFunc> ConstPtr;
+  typedef std::shared_ptr<L2LossFunc> Ptr;
+  typedef std::shared_ptr<const L2LossFunc> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
@@ -83,8 +83,8 @@ class HuberLossFunc : public LossFunction
  public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<HuberLossFunc> Ptr;
-  typedef boost::shared_ptr<const HuberLossFunc> ConstPtr;
+  typedef std::shared_ptr<HuberLossFunc> Ptr;
+  typedef std::shared_ptr<const HuberLossFunc> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor -- k is the `threshold' based on number of std devs (1-3 is typical)
@@ -117,8 +117,8 @@ class DcsLossFunc : public LossFunction
  public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<DcsLossFunc> Ptr;
-  typedef boost::shared_ptr<const DcsLossFunc> ConstPtr;
+  typedef std::shared_ptr<DcsLossFunc> Ptr;
+  typedef std::shared_ptr<const DcsLossFunc> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor -- k is the `threshold' based on number of std devs (1-3 is typical)
@@ -151,8 +151,8 @@ class GemanMcClureLossFunc : public LossFunction
  public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<GemanMcClureLossFunc> Ptr;
-  typedef boost::shared_ptr<const GemanMcClureLossFunc> ConstPtr;
+  typedef std::shared_ptr<GemanMcClureLossFunc> Ptr;
+  typedef std::shared_ptr<const GemanMcClureLossFunc> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor -- k is the `threshold' based on number of std devs (1-3 is typical)
@@ -185,8 +185,8 @@ class CauchyLossFunc : public LossFunction
  public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<CauchyLossFunc> Ptr;
-  typedef boost::shared_ptr<const CauchyLossFunc> ConstPtr;
+  typedef std::shared_ptr<CauchyLossFunc> Ptr;
+  typedef std::shared_ptr<const CauchyLossFunc> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor -- k is the `threshold' based on number of std devs (1-3 is typical)

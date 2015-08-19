@@ -22,8 +22,8 @@ class NaiveGPFactorEval : public ErrorEvaluator
 public:
 
   /// Shared pointer typedefs for readability
-  typedef boost::shared_ptr<NaiveGPFactorEval> Ptr;
-  typedef boost::shared_ptr<const NaiveGPFactorEval> ConstPtr;
+  typedef std::shared_ptr<NaiveGPFactorEval> Ptr;
+  typedef std::shared_ptr<const NaiveGPFactorEval> ConstPtr;
 
   /// Constructor
   NaiveGPFactorEval(double time1, double time2,

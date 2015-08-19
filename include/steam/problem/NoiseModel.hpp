@@ -8,7 +8,7 @@
 #define STEAM_NOISE_MODEL_HPP
 
 #include <Eigen/Dense>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 namespace steam {
 
@@ -22,8 +22,8 @@ class NoiseModel
   enum MatrixType { COVARIANCE, INFORMATION, SQRT_INFORMATION };
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<NoiseModel<MEAS_DIM> > Ptr;
-  typedef boost::shared_ptr<const NoiseModel<MEAS_DIM> > ConstPtr;
+  typedef std::shared_ptr<NoiseModel<MEAS_DIM> > Ptr;
+  typedef std::shared_ptr<const NoiseModel<MEAS_DIM> > ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Default constructor

@@ -7,7 +7,7 @@
 #ifndef STEAM_COST_TERM_COLLECTION_HPP
 #define STEAM_COST_TERM_COLLECTION_HPP
 
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <steam/problem/CostTermCollectionBase.hpp>
 
@@ -36,8 +36,8 @@ class CostTermCollection : public CostTermCollectionBase
  public:
 
   /// Convenience typedefs
-  typedef boost::shared_ptr<CostTermCollection<MEAS_DIM, MAX_STATE_SIZE, NUM_THREADS> > Ptr;
-  typedef boost::shared_ptr<const CostTermCollection<MEAS_DIM, MAX_STATE_SIZE, NUM_THREADS> > ConstPtr;
+  typedef std::shared_ptr<CostTermCollection<MEAS_DIM, MAX_STATE_SIZE, NUM_THREADS> > Ptr;
+  typedef std::shared_ptr<const CostTermCollection<MEAS_DIM, MAX_STATE_SIZE, NUM_THREADS> > ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

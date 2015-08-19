@@ -8,7 +8,7 @@
 #define STEAM_DOGLEG_GAUSS_NEWTON_SOLVER_HPP
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
+#include <memory>
 
 #include <steam/solver/GaussNewtonSolverBase.hpp>
 

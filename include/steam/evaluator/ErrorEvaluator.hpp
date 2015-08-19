@@ -19,8 +19,8 @@ namespace steam {
 template<int MEAS_DIM, int MAX_STATE_SIZE>
 struct ErrorEvaluator{
   typedef EvaluatorBase<Eigen::Matrix<double, MEAS_DIM, 1>, MEAS_DIM, MEAS_DIM, MAX_STATE_SIZE> type;
-  typedef boost::shared_ptr<type> Ptr;
-  typedef boost::shared_ptr<const type> ConstPtr;
+  typedef std::shared_ptr<type> Ptr;
+  typedef std::shared_ptr<const type> ConstPtr;
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////

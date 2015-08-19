@@ -24,8 +24,8 @@ class GpTrajectoryPrior : public ErrorEvaluator<12,6>::type
  public:
 
   /// Shared pointer typedefs for readability
-  typedef boost::shared_ptr<GpTrajectoryPrior> Ptr;
-  typedef boost::shared_ptr<const GpTrajectoryPrior> ConstPtr;
+  typedef std::shared_ptr<GpTrajectoryPrior> Ptr;
+  typedef std::shared_ptr<const GpTrajectoryPrior> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor

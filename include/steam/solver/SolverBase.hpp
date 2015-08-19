@@ -8,9 +8,9 @@
 #define STEAM_SOLVER_BASE_HPP
 
 #include <Eigen/Core>
-#include <boost/shared_ptr.hpp>
-#include <boost/make_shared.hpp>
+#include <memory>
 #include <stdexcept>
+#include <iomanip>
 
 #include <steam/problem/OptimizationProblem.hpp>
 
