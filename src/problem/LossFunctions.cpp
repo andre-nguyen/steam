@@ -17,6 +17,9 @@ namespace steam {
 /// \brief Cost function (basic evaluation of the loss function)
 //////////////////////////////////////////////////////////////////////////////////////////////
 double L2LossFunc::cost(double whitened_error_norm) const {
+  // Katarina
+  // Would it be more convenient (it would be easier to maintain) to use constant variables
+  // instead of hard-coded constants?
   return 0.5*whitened_error_norm*whitened_error_norm;
 }
 
@@ -24,6 +27,8 @@ double L2LossFunc::cost(double whitened_error_norm) const {
 /// \brief Weight for iteratively reweighted least-squares (influence function div. by error)
 //////////////////////////////////////////////////////////////////////////////////////////////
 double L2LossFunc::weight(double whitened_error_norm) const {
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   return 1.0;
 }
 
@@ -38,6 +43,8 @@ double L2LossFunc::weight(double whitened_error_norm) const {
 double HuberLossFunc::cost(double whitened_error_norm) const {
   double e2 = whitened_error_norm*whitened_error_norm;
   double abse = fabs(whitened_error_norm); // should already be positive anyway ...
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   if (abse <= k_) {
     return 0.5*e2;
   } else {
@@ -51,6 +58,8 @@ double HuberLossFunc::cost(double whitened_error_norm) const {
 double HuberLossFunc::weight(double whitened_error_norm) const {
   double abse = fabs(whitened_error_norm); // should already be positive anyway ...
   if (abse <= k_) {
+    // Katarina
+    // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
     return 1.0;
   } else {
     return k_/abse;
@@ -66,6 +75,8 @@ double HuberLossFunc::weight(double whitened_error_norm) const {
 //////////////////////////////////////////////////////////////////////////////////////////////
 double DcsLossFunc::cost(double whitened_error_norm) const {
   double e2 = whitened_error_norm*whitened_error_norm;
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   if (e2 <= k2_) {
     return 0.5*e2;
   } else {
@@ -78,6 +89,8 @@ double DcsLossFunc::cost(double whitened_error_norm) const {
 //////////////////////////////////////////////////////////////////////////////////////////////
 double DcsLossFunc::weight(double whitened_error_norm) const {
   double e2 = whitened_error_norm*whitened_error_norm;
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   if (e2 <= k2_) {
     return 1.0;
   } else {
@@ -95,6 +108,8 @@ double DcsLossFunc::weight(double whitened_error_norm) const {
 //////////////////////////////////////////////////////////////////////////////////////////////
 double GemanMcClureLossFunc::cost(double whitened_error_norm) const {
   double e2 = whitened_error_norm*whitened_error_norm;
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   return 0.5 * e2 / (k2_ + e2);
 }
 
@@ -115,6 +130,18 @@ double GemanMcClureLossFunc::weight(double whitened_error_norm) const {
 /// \brief Cost function (basic evaluation of the loss function)
 //////////////////////////////////////////////////////////////////////////////////////////////
 double CauchyLossFunc::cost(double whitened_error_norm) const {
+
+  // Katarina
+  //
+  // Expression 'log(1 + x)' can be replaced by 'log1p(x)' to avoid loss of precision.
+  // C++ 11 reference
+  // double log1p  (double x);
+  // float log1pf (float x);
+  // long double log1pl (long double x);
+  // Compute logarithm plus one
+  // Returns the natural logarithm of one plus x.
+  // For small magnitude values of x, logp1 may be more accurate than log(1+x).
+
   double e_div_k = fabs(whitened_error_norm)/k_;
   return 0.5 * k_ * k_ * std::log(1.0 + e_div_k*e_div_k);
 }
@@ -124,6 +151,8 @@ double CauchyLossFunc::cost(double whitened_error_norm) const {
 //////////////////////////////////////////////////////////////////////////////////////////////
 double CauchyLossFunc::weight(double whitened_error_norm) const {
   double e_div_k = fabs(whitened_error_norm)/k_;
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   return 1.0 / (1.0 + e_div_k*e_div_k);
 }
 

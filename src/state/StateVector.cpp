@@ -11,6 +11,14 @@
 
 namespace steam {
 
+  // Katarina
+  //
+  // Throwing exception is performance costly. Sometimes the same functionality can be achieved
+  // by just returning error code, but with huge performance gain.
+  // Especially if exceptions rolls-up several levels consider throwing exception only from top level.
+  // This file has five "throw std::runtime_error". "std::runtime_error" is mostly used to report errors
+  // that can only be detected during runtime, and it mostly serves as a base class for a specific exception.
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Default constructor
 //////////////////////////////////////////////////////////////////////////////////////////////

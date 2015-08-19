@@ -10,6 +10,20 @@
 
 namespace steam {
 
+  // Katarina
+  //
+  // Throwing exception is performance costly. Sometimes the same functionality can be achieved
+  // by just returning error code, but with huge performance gain.
+  // Especially if exceptions rolls-up several levels consider throwing exception only from top level.
+  //
+
+  // Katarina
+  //
+  // What is the use of default constructor? After default constructor is called how to
+  // set indexing_ . If indexing_ is not set then BlockVector::add and BlockVector::setFromScalar
+  // looks like it will fail.
+  // Any test/example for the use of default constructor?
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Default constructor, vector size must still be set before using
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -29,6 +43,9 @@ BlockVector::BlockVector(const std::vector<unsigned int>& blkRowSizes) : indexin
 BlockVector::BlockVector(const std::vector<unsigned int>& blkRowSizes, const Eigen::VectorXd& v)
  : indexing_(blkRowSizes) {
 
+  // Katarina
+  //
+  // No need for this-> since there is no name ambiguity for calling setFromScalar(v) ?
   this->setFromScalar(v);
 }
 

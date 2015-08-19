@@ -11,11 +11,19 @@
 namespace steam {
 namespace se3 {
 
+  // Katarina
+  //
+  // Throwing exception is performance costly. Sometimes the same functionality can be achieved
+  // by just returning error code, but with huge performance gain.
+  // Especially if exceptions rolls-up several levels consider throwing exception only from top level.
+  //
+
 // State variable
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Constructor
 //////////////////////////////////////////////////////////////////////////////////////////////
+  // Katarina : Use 100c. or 80c.
 TransformStateEvaluator::TransformStateEvaluator(const se3::TransformStateVar::ConstPtr& transform) : transform_(transform) {
 }
 
@@ -119,6 +127,7 @@ void TransformStateEvaluator::appendJacobians6(const Eigen::Matrix<double,6,6>& 
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Constructor
 //////////////////////////////////////////////////////////////////////////////////////////////
+// Katarina : Use 100c. or 80c.
 FixedTransformEvaluator::FixedTransformEvaluator(const lgmath::se3::Transformation& transform) : transform_(transform) {
 }
 

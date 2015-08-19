@@ -11,6 +11,13 @@
 
 namespace steam {
 
+  // Katarina
+  //
+  // Throwing exception is performance costly. Sometimes the same functionality can be achieved
+  // by just returning error code, but with huge performance gain.
+  // Especially if exceptions rolls-up several levels consider throwing exception only from top level.
+  //
+
 //////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Default Constructor
 //////////////////////////////////////////////////////////////////////////////////////////////

@@ -203,6 +203,9 @@ double GaussNewtonSolverBase::predictedReduction(const Eigen::SparseMatrix<doubl
   double gradTransStep = gradientVector.transpose() * step;
   double stepTransHessianStep = step.transpose()
                                 * (approximateHessian.selfadjointView<Eigen::Upper>() * step);
+
+  // Katarina
+  // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
   return gradTransStep - 0.5 * stepTransHessianStep;
 }
 

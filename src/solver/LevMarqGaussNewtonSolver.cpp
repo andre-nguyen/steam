@@ -32,6 +32,8 @@ Eigen::VectorXd LevMarqGaussNewtonSolver::solveLevMarq(const Eigen::VectorXd& gr
 
   // Augment diagonal of the 'hessian' matrix
   for (int i = 0; i < approximateHessian_.outerSize(); i++) {
+    // Katarina
+    // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
     approximateHessian_.coeffRef(i,i) *= (1.0 + diagonalCoeff);
   }
 
@@ -46,15 +48,27 @@ Eigen::VectorXd LevMarqGaussNewtonSolver::solveLevMarq(const Eigen::VectorXd& gr
 
     // Revert diagonal of the 'hessian' matrix
     for (int i = 0; i < approximateHessian_.outerSize(); i++) {
+      // Katarina
+      // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
       approximateHessian_.coeffRef(i,i) /= (1.0 + diagonalCoeff);
     }
 
     // Throw up again
+
+    // Katarina
+    // Rethrowing an exception with 'throw ex;' creates an unnecessary copy of 'ex'.
+    // To rethrow the caught exception without unnecessary copying or slicing,
+    // use a bare 'throw;'.
+    // Also throw ex resets stack so it will appear that exception originates from catch block,
+    // while throw will not reset stack and original error information will be preserved.
+
     throw ex;
   }
 
   // Revert diagonal of the 'hessian' matrix
   for (int i = 0; i < approximateHessian_.outerSize(); i++) {
+    // Katarina
+    // Using hard-coded constants can be hard to maintain. If applicable try using constant variables.
     approximateHessian_.coeffRef(i,i) /= (1.0 + diagonalCoeff);
   }
 

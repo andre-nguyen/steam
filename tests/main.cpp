@@ -32,3 +32,12 @@
 //    }
 //} // TEST_CASE
 
+
+// Katarina
+// Creating both positive and negative tests separately?
+// Create tests to try out some edge cases or some of the cases that cause the code fail.
+// The code looks good to handle these cases.
+// Just mentioning this if you want to add more tests to see if you got all the possible
+// combinations for each function.
+// If the tests already do that then ignore this comment (the pattern_tests does checks, example:
+// "if (solver.info() != Eigen::Success)". Do you want to add more tests that purposely fail?)
