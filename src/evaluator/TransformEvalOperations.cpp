@@ -37,6 +37,15 @@ bool ComposeTransformEvaluator::isActive() const {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief Adds references (shared pointers) to active state variables to the map output
+//////////////////////////////////////////////////////////////////////////////////////////////
+void ComposeTransformEvaluator::getActiveStateVariables(
+    std::map<unsigned int, steam::StateVariableBase::Ptr>* outStates) const {
+  transform1_->getActiveStateVariables(outStates);
+  transform2_->getActiveStateVariables(outStates);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Evaluate the resultant transformation matrix (transform1*transform2)
 //////////////////////////////////////////////////////////////////////////////////////////////
 lgmath::se3::Transformation ComposeTransformEvaluator::evaluate() const {
@@ -263,6 +272,14 @@ bool InverseTransformEvaluator::isActive() const {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief Adds references (shared pointers) to active state variables to the map output
+//////////////////////////////////////////////////////////////////////////////////////////////
+void InverseTransformEvaluator::getActiveStateVariables(
+    std::map<unsigned int, steam::StateVariableBase::Ptr>* outStates) const {
+  transform_->getActiveStateVariables(outStates);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Evaluate the resultant transformation matrix
 //////////////////////////////////////////////////////////////////////////////////////////////
 lgmath::se3::Transformation InverseTransformEvaluator::evaluate() const {
@@ -385,6 +402,14 @@ bool LogMapEvaluator::isActive() const {
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief Adds references (shared pointers) to active state variables to the map output
+//////////////////////////////////////////////////////////////////////////////////////////////
+void LogMapEvaluator::getActiveStateVariables(
+    std::map<unsigned int, steam::StateVariableBase::Ptr>* outStates) const {
+  transform_->getActiveStateVariables(outStates);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
 /// \brief Evaluate the resultant 6x1 vector belonging to the se(3) algebra
 //////////////////////////////////////////////////////////////////////////////////////////////
 Eigen::Matrix<double,6,1> LogMapEvaluator::evaluate() const {
@@ -490,7 +515,7 @@ void LogMapEvaluator::appendJacobians6(const Eigen::Matrix<double,6,6>& lhs,
 /// \brief Constructor
 //////////////////////////////////////////////////////////////////////////////////////////////
 ComposeLandmarkEvaluator::ComposeLandmarkEvaluator(const TransformEvaluator::ConstPtr& transform,
-                                                   const se3::LandmarkStateVar::ConstPtr& landmark)
+                                                   const se3::LandmarkStateVar::Ptr& landmark)
   : landmark_(landmark) {
 
   // Check if landmark has a reference frame and create pose evaluator
@@ -505,7 +530,7 @@ ComposeLandmarkEvaluator::ComposeLandmarkEvaluator(const TransformEvaluator::Con
 /// \brief Pseudo constructor - return a shared pointer to a new instance
 //////////////////////////////////////////////////////////////////////////////////////////////
 ComposeLandmarkEvaluator::Ptr ComposeLandmarkEvaluator::MakeShared(const TransformEvaluator::ConstPtr& transform,
-                                                                   const se3::LandmarkStateVar::ConstPtr& landmark) {
+                                                                   const se3::LandmarkStateVar::Ptr& landmark) {
   return ComposeLandmarkEvaluator::Ptr(new ComposeLandmarkEvaluator(transform, landmark));
 }
 
@@ -514,6 +539,17 @@ ComposeLandmarkEvaluator::Ptr ComposeLandmarkEvaluator::MakeShared(const Transfo
 //////////////////////////////////////////////////////////////////////////////////////////////
 bool ComposeLandmarkEvaluator::isActive() const {
   return transform_->isActive() || !landmark_->isLocked();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+/// \brief Adds references (shared pointers) to active state variables to the map output
+//////////////////////////////////////////////////////////////////////////////////////////////
+void ComposeLandmarkEvaluator::getActiveStateVariables(
+    std::map<unsigned int, steam::StateVariableBase::Ptr>* outStates) const {
+  transform_->getActiveStateVariables(outStates);
+  if (!landmark_->isLocked()) {
+    (*outStates)[landmark_->getKey().getID()] = landmark_;
+  }
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
@@ -561,7 +597,8 @@ void ComposeLandmarkEvaluator::appendJacobians(const Eigen::MatrixXd& lhs,
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    transform_->appendJacobians(lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>()),
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    transform_->appendJacobians(lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]),
                                 t1, outJacobians);
   }
 
@@ -590,7 +627,8 @@ void ComposeLandmarkEvaluator::appendJacobians1(const Eigen::Matrix<double,1,4>&
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    Eigen::Matrix<double,1,6> newLhs = lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>());
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    Eigen::Matrix<double,1,6> newLhs = lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]);
     transform_->appendJacobians1(newLhs, t1, outJacobians);
   }
 
@@ -614,7 +652,8 @@ void ComposeLandmarkEvaluator::appendJacobians2(const Eigen::Matrix<double,2,4>&
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    Eigen::Matrix<double,2,6> newLhs = lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>());
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    Eigen::Matrix<double,2,6> newLhs = lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]);
     transform_->appendJacobians2(newLhs, t1, outJacobians);
   }
 
@@ -638,7 +677,8 @@ void ComposeLandmarkEvaluator::appendJacobians3(const Eigen::Matrix<double,3,4>&
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    Eigen::Matrix<double,3,6> newLhs = lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>());
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    Eigen::Matrix<double,3,6> newLhs = lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]);
     transform_->appendJacobians3(newLhs, t1, outJacobians);
   }
 
@@ -662,7 +702,8 @@ void ComposeLandmarkEvaluator::appendJacobians4(const Eigen::Matrix<double,4,4>&
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    Eigen::Matrix<double,4,6> newLhs = lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>());
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    Eigen::Matrix<double,4,6> newLhs = lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]);
     transform_->appendJacobians4(newLhs, t1, outJacobians);
   }
 
@@ -686,7 +727,8 @@ void ComposeLandmarkEvaluator::appendJacobians6(const Eigen::Matrix<double,6,4>&
 
   // Check if transform1 is active
   if (transform_->isActive()) {
-    Eigen::Matrix<double,6,6> newLhs = lhs * lgmath::se3::point2fs(evaluationTree->getValue().head<3>());
+    const Eigen::Vector4d& homogeneous = evaluationTree->getValue();
+    Eigen::Matrix<double,6,6> newLhs = lhs * lgmath::se3::point2fs(homogeneous.head<3>(), homogeneous[3]);
     transform_->appendJacobians6(newLhs, t1, outJacobians);
   }
 

@@ -1,36 +1,33 @@
 //////////////////////////////////////////////////////////////////////////////////////////////
-/// \file GpTrajectoryPrior.hpp
+/// \file RangeConditioningEval.hpp
 ///
 /// \author Sean Anderson, ASRL
 //////////////////////////////////////////////////////////////////////////////////////////////
 
-#ifndef STEAM_GP_TRAJECTORY_PRIOR_HPP
-#define STEAM_GP_TRAJECTORY_PRIOR_HPP
+#ifndef STEAM_RANGE_CONDITIONING_EVALUATOR_HPP
+#define STEAM_RANGE_CONDITIONING_EVALUATOR_HPP
 
-#include <Eigen/Core>
-
-#include <steam/trajectory/GpTrajectory.hpp>
 #include <steam/evaluator/ErrorEvaluator.hpp>
 
+#include <steam/state/LandmarkStateVar.hpp>
+
 namespace steam {
-namespace se3 {
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-/// \brief Gaussian-process prior evaluator
+/// \brief
 //////////////////////////////////////////////////////////////////////////////////////////////
-class GpTrajectoryPrior : public ErrorEvaluatorX
+class RangeConditioningEval : public ErrorEvaluator<1,3>::type
 {
- public:
+public:
 
-  /// Shared pointer typedefs for readability
-  typedef std::shared_ptr<GpTrajectoryPrior> Ptr;
-  typedef std::shared_ptr<const GpTrajectoryPrior> ConstPtr;
+  /// Convenience typedefs
+  typedef std::shared_ptr<RangeConditioningEval> Ptr;
+  typedef std::shared_ptr<const RangeConditioningEval> ConstPtr;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Constructor
   //////////////////////////////////////////////////////////////////////////////////////////////
-  GpTrajectoryPrior(const GpTrajectory::Knot::ConstPtr& knot1,
-                    const GpTrajectory::Knot::ConstPtr& knot2);
+  RangeConditioningEval(const se3::LandmarkStateVar::ConstPtr& landmark);
 
   //////////////////////////////////////////////////////////////////////////////////////////////
   /// \brief Returns whether or not an evaluator contains unlocked state variables
@@ -38,31 +35,23 @@ class GpTrajectoryPrior : public ErrorEvaluatorX
   virtual bool isActive() const;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
-  /// \brief Evaluate the GP prior factor
+  /// \brief
   //////////////////////////////////////////////////////////////////////////////////////////////
-  virtual Eigen::VectorXd evaluate() const;
+  virtual Eigen::Matrix<double,1,1> evaluate() const;
 
   //////////////////////////////////////////////////////////////////////////////////////////////
-  /// \brief Evaluate the GP prior factor and Jacobians
+  /// \brief
   //////////////////////////////////////////////////////////////////////////////////////////////
-  virtual Eigen::VectorXd evaluate(const Eigen::MatrixXd& lhs, std::vector<Jacobian<> >* jacs) const;
+  virtual Eigen::Matrix<double,1,1> evaluate(const Eigen::Matrix<double,1,1>& lhs, std::vector<Jacobian<1,3> >* jacs) const;
 
- private:
+private:
 
-  //////////////////////////////////////////////////////////////////////////////////////////////
-  /// \brief First (earlier) knot
-  //////////////////////////////////////////////////////////////////////////////////////////////
-  GpTrajectory::Knot::ConstPtr knot1_;
+  Eigen::Matrix<double,1,1> meas_;
 
-  //////////////////////////////////////////////////////////////////////////////////////////////
-  /// \brief Second (later) knot
-  //////////////////////////////////////////////////////////////////////////////////////////////
-  GpTrajectory::Knot::ConstPtr knot2_;
+  se3::LandmarkStateVar::ConstPtr landmark_;
 
 };
 
-} // se3
 } // steam
 
-#endif // STEAM_GP_TRAJECTORY_PRIOR_HPP
-
+#endif // STEAM_RANGE_CONDITIONING_EVALUATOR_HPP
