@@ -7,6 +7,7 @@
 #ifndef STEAM_TRANSFORM_EVALUATORS_HPP
 #define STEAM_TRANSFORM_EVALUATORS_HPP
 
+#include <map>
 #include <Eigen/Core>
 
 #include <steam/evaluator/BlockAutomaticEvaluator.hpp>

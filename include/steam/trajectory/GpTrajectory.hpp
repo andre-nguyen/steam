@@ -7,6 +7,7 @@
 #ifndef STEAM_GP_TRAJECTORY_HPP
 #define STEAM_GP_TRAJECTORY_HPP
 
+#include <map>
 #include <Eigen/Core>
 
 #include <steam/common/Time.hpp>
