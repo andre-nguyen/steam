@@ -10,3 +10,7 @@
 	path = deps/catkin/catkin_optional
 	url = https://github.com/utiasASRL/catkin_optional.git
 	branch = master
+[submodule "ci/jenkins"]
+	path = ci/jenkins
+	url = https://github.com/utiasASRL/jenkins.git
+	branch = feature/multi-pipeline-fix-update
