@@ -2,7 +2,9 @@
   - cd src/deps/catkin
   - build:
     - catkin config --extend=/opt/ros/install
-    - catkin build
+    - catkin build catkin_optional
+    - catkin build catch
+    - catkin build lgmath
 
 - steam:
   - cd src
