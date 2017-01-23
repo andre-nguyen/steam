@@ -11,5 +11,5 @@
   - build:
     - catkin build
   - test:
-    - cd ../devel/steam/lib/steam
+    - cd ../devel/repo/lib/steam
     - ./steam_unit_tests
