@@ -9,7 +9,7 @@ import groovy.transform.Field
 ]
 
 // This is generic boilerplate used to bootstrap the jenkins scripts in the submodule
-node("docker_plugin_node_2") {
+node("docker_build_container") {
   try {
     // This checks out the code, and loads up the real pipeline driver from the submodule
     /**/stage("Initialize Pipeline") {
