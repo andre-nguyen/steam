@@ -21,13 +21,13 @@ stages: [build, test, clean]
 build:
   timeout: 36000 # 10 h
   message: build
-  sections: [dependencies, source, build]
+  sections: [build]
 test:
   timeout: 36000 # 10 h
   message: test
-  sections: [robochunk.test, vtr2.test.grizzly]
+  sections: [test]
 clean:
   timeout: 3600
   message: clean
-  sections: [vtr2.clean]
+  sections: [clean]
   

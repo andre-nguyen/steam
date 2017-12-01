@@ -6,7 +6,6 @@
 import groovy.transform.Field
 @Field def config_overlay = [
   "default" : ["ci/config/default.yaml"],
-  "noncuda" : ["ci/config/default.yaml", "ci/config/noncuda.yaml"],
 ]
 
 // This is generic boilerplate used to bootstrap the jenkins scripts in the submodule
