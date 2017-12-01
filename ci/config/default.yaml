@@ -1,0 +1,33 @@
+# general config
+config:
+  emails: [katarina.cujic@robotics.utias.utoronto.ca]
+  map_data: "/ASRL/jenkins-data"
+  docker:
+    image: "jenkins/cuda-opencv3:0.0.2"
+    destroy_on_error: false
+    destroy_on_job_sucess: false
+    destroy_after_days: 5
+  slack:
+    started: true
+    success: true
+    failure: true
+  message_prefix : default
+
+# Yamlrun file for build to run
+yaml: ci/yamlrun/default.yaml
+
+# Stages to run
+stages: [build, test, clean]
+build:
+  timeout: 36000 # 10 h
+  message: build
+  sections: [dependencies, source, build]
+test:
+  timeout: 36000 # 10 h
+  message: test
+  sections: [robochunk.test, vtr2.test.grizzly]
+clean:
+  timeout: 3600
+  message: clean
+  sections: [vtr2.clean]
+  

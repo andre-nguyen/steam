@@ -1,0 +1,90 @@
+- pwd
+
+- robots:
+  - 'echo "current dir: " && pwd'
+  - mkdir -p /opt/utiasASRL/robots/
+  - cd /opt/utiasASRL/robots/
+  - source:
+    - git clone -q --recursive https://$GIT_USERNAME:$GIT_PASSWORD@github.com/utiasASRL/robots src
+  - build:
+    - pwd
+    - catkin init
+    - catkin config --no-cmake-args
+    - catkin config --extend /opt/utiasASRL/extras/devel
+    - catkin config -a --cmake-args -DCMAKE_BUILD_TYPE=Release
+    - catkin build --no-status
+
+- vtr2_deps:
+  - 'echo "current dir: " && pwd'
+  - cd src/deps/catkin
+  - build:
+    - pwd
+    - catkin config --extend /opt/utiasASRL/robots/devel
+    - catkin config -a --cmake-args -DCMAKE_BUILD_TYPE=Release
+    - catkin build --no-status
+
+- robochunk:
+  - 'echo "current dir: " && pwd'
+  - 'export VTRDIR=$PWD'
+  - mkdir -p /opt/utiasASRL/robochunk/
+  - cd /opt/utiasASRL/robochunk/
+  - source:
+    - git clone -q --recursive https://$GIT_USERNAME:$GIT_PASSWORD@github.com/utiasASRL/robochunk src
+  - build:
+    - pwd
+    - export UTIAS_ROS_DIR=/opt/ros
+    - export UTIAS_ROS_SRC_DIR_BABEL=/opt/ros/src
+    - export ROS_UTIAS_DIR_BABEL=/opt/
+    - export ROS_ASRL_DIR_BABEL=/opt/
+    - export ROS_EXTRAS_DIR_BABEL=/opt/utiasASRL/extras
+    - export ROS_EXTRAS_INSTALL_DIR_BABEL=/opt/
+    - export ROS_TRANSLATOR_TOOL_DIR=/opt/utiasASRL/autoGenTranslatorCode/src
+    - mkdir -p build
+    - cd build
+    - source ${VTRDIR}/devel/deps/setup.bash
+    - cmake ../src
+    - make -j8
+    - make install
+  - test:
+    - cd /opt/utiasASRL/robochunk/build/robochunk_base
+    - ./IOTests
+
+- svn-migrated:
+  - 'echo "current dir: " && pwd'
+  - 'export VTRDIR=$PWD'
+  - mkdir -p /opt/utiasASRL/autoGenTranslatorCode/
+  - cd /opt/utiasASRL/autoGenTranslatorCode/
+  - source:
+    - git clone -q --recursive https://$GIT_USERNAME:$GIT_PASSWORD@github.com/utiasASRL/svn_migrated src
+  - build:
+    - pwd
+    - tree src
+    - catkin init
+    - catkin config --no-cmake-args
+    - catkin config --extend ${VTRDIR}/devel/deps
+    - catkin config -a --cmake-args -DCMAKE_BUILD_TYPE=Release
+    - catkin build --no-status
+
+- vtr2:
+  - 'echo "current dir: " && pwd'
+  - dependencies:
+    - pip install pandas
+  - build:
+    - pwd
+    - catkin init
+    - catkin config --no-cmake-args
+    - catkin config --extend /opt/utiasASRL/autoGenTranslatorCode/devel
+    - catkin config -a --cmake-args -DCMAKE_BUILD_TYPE=Release
+    - catkin config --merge-devel
+    - catkin build --no-status
+  - test:
+    - export TERM=xterm
+    - export ASRL_DATA_DIR=
+    - source devel/setup.bash
+    - cd src/asrl__navigation/test/scripts
+    - grizzly:
+      - ./replay_and_verify_graph.sh /home/jenkins/jenkins-data/2016-In_The_Dark/
+    - lancaster:
+      - ./replay_and_verify_graph_lancaster.sh /home/jenkins/jenkins-data/lancaster_data/
+  - clean:
+    - catkin clean -y
